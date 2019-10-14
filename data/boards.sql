@@ -1,0 +1,21 @@
+DROP TABLE IF EXISTS boards, cards, statuses;
+
+CREATE TABLE boards(
+    id serial primary key,
+    title varchar(255)
+);
+
+CREATE TABLE cards(
+    id serial primary key,
+    board_id int references boards(id),
+    title varchar(255),
+    status_id int,
+    "order" int
+);
+
+CREATE TABLE statuses(
+    id serial primary key,
+    title varchar(255)
+);
+
+
