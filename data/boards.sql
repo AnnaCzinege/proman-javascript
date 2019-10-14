@@ -13,6 +13,11 @@ CREATE TABLE cards(
     "order" int
 );
 
+ALTER TABLE cards
+    ADD constraint unique_order unique (
+            board_id, status_id, "order"
+        );
+
 CREATE TABLE statuses(
     id serial primary key,
     title varchar(255)
