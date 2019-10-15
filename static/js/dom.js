@@ -8,44 +8,21 @@ export let dom = {
     loadBoards: function () {
         // retrieves boards and makes showBoards called
         dataHandler.getBoards(function(boards){
-            dom.testFunction(boards);
+            dom.showTable(boards);
         });
     },
-    showBoards: function (boards) {
-        // shows boards appending them to #boards div
-        // it adds necessary event listeners also
-
-        let boardList = '';
-
-        for(let board of boards.boards){
-            boardList += `<li>${board.title}</li>`;
-        }
-
-        const outerHtml = `
-            <ul class="board-container">
-                ${boardList}
-            </ul>
-        `;
-
-        let boardsContainer = document.querySelector('#boards');
-        boardsContainer.insertAdjacentHTML("beforeend", outerHtml);
-    },
-    loadCards: function (boardId) {
-        // retrieves cards and makes showCards called
-    },
-    showCards: function (cards) {
-        // shows the cards of a board
-        // it adds necessary event listeners also
-    },
-    testFunction: function (boards) {
+    showTable: function (boards) {
         let boardContainer = document.createElement("div");
+        let addBoardBtn = document.createElement("button");
+        addBoardBtn.setAttribute("class", "new-board");
+        addBoardBtn.innerText = "Add board";
         for (let board of boards.boards) {
 
 
             let boardSection = document.createElement("section");
             let boardHeader = document.createElement("div");
             let boardTitle = document.createElement("span");
-            let addBtn = document.createElement("button");
+            let addCardBtn = document.createElement("button");
             let boardToggle = document.createElement("button");
             let boardI = document.createElement("i");
             let boardBackground = document.createElement("div");
@@ -54,15 +31,15 @@ export let dom = {
             boardSection.setAttribute("class", "board");
             boardHeader.setAttribute("class", "board-header");
             boardTitle.setAttribute("class", "board-title");
-            addBtn.setAttribute("class", "board-add");
+            addCardBtn.setAttribute("class", "board-add");
             boardToggle.setAttribute("class", "board-toggle");
             boardI.setAttribute("class", "fas fa-chevron-down");
             boardBackground.setAttribute("class", "board-columns");
 
             boardTitle.innerText = board.title;
-            addBtn.innerText = "Add new board";
+            addCardBtn.innerText = "Add card";
             boardToggle.appendChild(boardI);
-            for (let child of [boardTitle, addBtn, boardToggle]) {
+            for (let child of [boardTitle, addCardBtn, boardToggle]) {
                 boardHeader.appendChild(child);
             }
 
@@ -104,6 +81,8 @@ export let dom = {
             boardSection.appendChild(boardBackground);
             boardContainer.appendChild(boardSection);
         }
+        document.body.appendChild(addBoardBtn);
         document.body.appendChild(boardContainer);
-    }
+    },
+
 };
