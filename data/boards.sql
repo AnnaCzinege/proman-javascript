@@ -5,6 +5,7 @@ CREATE TABLE boards(
     title varchar(255)
 );
 
+
 CREATE TABLE cards(
     id serial primary key,
     board_id int references boards(id),

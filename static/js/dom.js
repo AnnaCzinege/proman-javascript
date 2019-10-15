@@ -13,6 +13,7 @@ export let dom = {
     },
     showTable: function (boards) {
         let boardContainer = document.createElement("div");
+        boardContainer.setAttribute("class", "board-container");
         let addBoardBtn = document.createElement("button");
         addBoardBtn.setAttribute("class", "new-board");
         addBoardBtn.innerText = "Add board";
@@ -28,7 +29,6 @@ export let dom = {
             let boardI = document.createElement("i");
             let boardBackground = document.createElement("div");
 
-            boardContainer.setAttribute("class", "board-container");
             boardSection.setAttribute("class", "board");
             boardHeader.setAttribute("class", "board-header");
             boardTitle.setAttribute("class", "board-title");
@@ -86,12 +86,11 @@ export let dom = {
         document.body.appendChild(boardContainer);
     },
     createBoard: function () {
-        dataHandler.getBoards(function (boards) {
-            dom.showNewTable(boards);
-            dataHandler.createNewBoard()
-        })
+        dataHandler.createNewBoard("New table",function (data) {
+            dom.showNewTable(data);
+        });
     },
-    showNewTable: function (boards) {
+    showNewTable: function (data) {
         let boardContainer = document.querySelector(".board-container");
         let boardSection = document.createElement("section");
         let boardHeader = document.createElement("div");
@@ -103,6 +102,7 @@ export let dom = {
 
         boardContainer.setAttribute("class", "board-container");
         boardSection.setAttribute("class", "board");
+        boardSection.setAttribute("id", data["id"]);
         boardHeader.setAttribute("class", "board-header");
         boardTitle.setAttribute("class", "board-title");
         addCardBtn.setAttribute("class", "board-add");
@@ -117,7 +117,7 @@ export let dom = {
             boardHeader.appendChild(child);
         }
 
-        for (let status of boards.statuses) {
+        for (let status of ["new", "in progress", "testing", "done"]) {
             let container = document.createElement("div");
             let columnTitle = document.createElement("div");
             let columnContent = document.createElement("div");
@@ -125,7 +125,7 @@ export let dom = {
             container.setAttribute("class", "board-column");
             columnTitle.setAttribute("class", "board-column-title");
             columnContent.setAttribute("class", "board-column-content");
-            columnTitle.innerText = status.title;
+            columnTitle.innerText = status;
             container.appendChild(columnTitle);
             container.appendChild(columnContent);
             boardBackground.appendChild(container);

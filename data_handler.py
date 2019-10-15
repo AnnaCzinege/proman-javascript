@@ -43,5 +43,22 @@ def get_boards(cursor):
         }
 
 
+@database_common.connection_handler
+def save_new_board(cursor, board_name):
+    cursor.execute("""
+                    INSERT INTO boards(title)
+                    VALUES (%(board_name)s)
+                    """, {"board_name": board_name})
+
+
+@database_common.connection_handler
+def get_latest_board(cursor):
+    cursor.execute("""
+                    SELECT id FROM boards
+                    ORDER BY id DESC 
+                    LIMIT 1
+                    """)
+    return normalize_output_single_row(cursor.fetchall())
+
 
 
