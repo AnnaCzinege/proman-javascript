@@ -61,4 +61,37 @@ def get_latest_board(cursor):
     return normalize_output_single_row(cursor.fetchall())
 
 
+@database_common.connection_handler
+def save_new_card(cursor, card_dict):
+    cursor.execute("""
+                    SELECT MAX("order") as max from cards;
+                    """)
+    max_order = normalize_output_single_row(cursor.fetchall())["max"]
+    if max_order is None:
+        max_order = 0
+    else:
+        max_order += 1
+    board_id = card_dict["board_id"]
+    status_id = card_dict["status_id"]
+    title = card_dict["title"]
+    cursor.execute("""
+                    INSERT INTO cards (board_id, title, status_id, "order")
+                    VALUES (%(board_id)s, %(title)s, %(status_id)s, %(max_order)s) 
+                    """, {"board_id": board_id,
+                          "title": title,
+                          "status_id": status_id,
+                          "max_order": max_order
+                          })
+
+
+@database_common.connection_handler
+def get_latest_card(cursor):
+    cursor.execute("""
+                    SELECT id FROM cards
+                    ORDER BY  id DESC
+                    LIMIT 1
+                    """)
+    return normalize_output_single_row(cursor.fetchall())
+
+
 

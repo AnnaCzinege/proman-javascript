@@ -18,22 +18,20 @@ def get_boards():
 @app.route("/create-new-board", methods=['GET', 'POST'])
 def create_new_board():
     if request.method == "POST":
-        print("post")
         board_dict = request.get_json("body")
-        print(board_dict)
         board_name = board_dict["data"]
         data_handler.save_new_board(board_name)
 
     return jsonify(data_handler.get_latest_board())
 
 
-@app.route("/get-cards/<int:board_id>")
-def get_cards_for_board(board_id: int):
-    """
-    All cards that belongs to a board
-    :param board_id: id of the parent board
-    """
-    return data_handler.get_cards_for_board(board_id)
+@app.route("/create-new-card", methods=['GET', 'POST'])
+def create_new_card():
+    if request.method == "POST":
+        card_dict = request.get_json("body")
+        data_handler.save_new_card(card_dict)
+
+    return jsonify(data_handler.get_latest_card())
 
 
 def main():
