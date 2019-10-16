@@ -34,6 +34,15 @@ def create_new_card():
     return jsonify(data_handler.get_latest_card())
 
 
+@app.route("/rename-board", methods=['GET', 'POST'])
+def rename_board():
+    if request.method == 'POST':
+        new_title_dict = request.get_json("body")
+        data_handler.rename_board_title(new_title_dict)
+
+    return jsonify({"title": new_title_dict["new_title"]})
+
+
 def main():
     app.run(debug=True)
 

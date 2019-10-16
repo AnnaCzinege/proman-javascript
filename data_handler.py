@@ -22,7 +22,8 @@ def normalize_output_multiple_rows(normalize_me):  # Creates dictionaries in a l
 @database_common.connection_handler
 def get_boards(cursor):
     cursor.execute("""
-                    SELECT * FROM boards;
+                    SELECT * FROM boards
+                    ORDER BY id
                     """)
     boards = normalize_output_multiple_rows(cursor.fetchall())
 
@@ -92,6 +93,18 @@ def get_latest_card(cursor):
                     LIMIT 1
                     """)
     return normalize_output_single_row(cursor.fetchall())
+
+
+@database_common.connection_handler
+def rename_board_title(cursor, new_title_dict):
+    board_id = new_title_dict["board_id"]
+    new_title = new_title_dict["new_title"]
+    cursor.execute("""
+                    UPDATE boards
+                    SET title = %(new_title)s
+                    WHERE id = %(board_id)s
+                    """, {"new_title": new_title,
+                          "board_id": board_id})
 
 
 

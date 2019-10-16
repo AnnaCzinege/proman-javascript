@@ -1,7 +1,8 @@
 // It uses data_handler.js to visualize elements
-import { dataHandler } from "./data_handler.js";
+import {dataHandler} from "./data_handler.js";
 
 export let dom = {
+    oldContent: "",
     init: function () {
         // This function should run once, when the page is loaded.
     },
@@ -32,6 +33,7 @@ export let dom = {
             boardSection.setAttribute("id", board.id);
             boardHeader.setAttribute("class", "board-header");
             boardTitle.setAttribute("class", "board-title");
+            boardTitle.addEventListener("click", dom.clickBoardTitle);
             addCardBtn.setAttribute("class", "board-add");
             boardToggle.setAttribute("class", "board-toggle");
             boardI.setAttribute("class", "fas fa-chevron-down");
@@ -107,6 +109,7 @@ export let dom = {
         boardSection.setAttribute("id", data["id"]);
         boardHeader.setAttribute("class", "board-header");
         boardTitle.setAttribute("class", "board-title");
+        boardTitle.addEventListener("click", dom.clickBoardTitle);
         addCardBtn.setAttribute("class", "board-add");
         boardToggle.setAttribute("class", "board-toggle");
         boardI.setAttribute("class", "fas fa-chevron-down");
@@ -162,5 +165,26 @@ export let dom = {
         cardBox.appendChild(cardRemove);
         cardBox.appendChild(cardTitle);
         cardPlace.appendChild(cardBox);
+    },
+    clickBoardTitle: function () {
+        dom.oldContent = this.innerText;
+        this.outerHTML = "<input type='text' value='" + dom.oldContent +"' class='new-title'>";
+        document.querySelector(".new-title").addEventListener("keypress", dom.renameBoardTitle)
+    },
+    switchBackToSpan: function (data, placeToChange) {
+        let parentNode = placeToChange.parentNode;
+        placeToChange.outerHTML = "<span class='board-title'>" + data["title"] + "</span>";
+        let boardTitle = parentNode.querySelector(".board-title");
+        boardTitle.addEventListener("click", dom.clickBoardTitle);
+    },
+    renameBoardTitle: function (e) {
+        let key = e.which || e.keyCode;
+        if (key === 13) {
+            let boardId = this.parentElement.parentElement.id;
+            let newTitle = document.querySelector(".new-title").value;
+            dataHandler.renameBoard(boardId,newTitle, (data) => {
+                dom.switchBackToSpan(data, this);
+            })
+        }
     }
 };
