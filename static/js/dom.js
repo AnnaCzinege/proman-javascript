@@ -109,9 +109,10 @@ export let dom = {
                 boardSection.appendChild(boardBackground);
                 boardContainer.appendChild(boardSection);
             }
-            document.body.appendChild(addBoardBtn);
-            document.body.appendChild(boardContainer);
+
         }
+        document.body.appendChild(addBoardBtn);
+        document.body.appendChild(boardContainer);
     },
     createBoard: function () {
         dataHandler.createNewBoard("New board", function (data) {
