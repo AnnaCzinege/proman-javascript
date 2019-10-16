@@ -62,5 +62,11 @@ export let dataHandler = {
         callback(response);
         })
 
+    },
+    deleteCard: function (cardID, callback) {
+        this._api_post("/delete-card", {"card_id": cardID}, (response) => {
+            this._data = response;
+            callback(response);
+        })
     }
 };

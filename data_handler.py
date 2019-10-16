@@ -107,4 +107,14 @@ def rename_board_title(cursor, new_title_dict):
                           "board_id": board_id})
 
 
+@database_common.connection_handler
+def delete_card_by_id(cursor, card_id_dict):
+    card_id = card_id_dict["card_id"]
+    cursor.execute("""
+                    DELETE 
+                    FROM cards
+                    WHERE cards.id = %(card_id)s
+                    """, {"card_id": card_id})
+
+
 

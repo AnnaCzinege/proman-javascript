@@ -43,6 +43,13 @@ def rename_board():
     return jsonify({"title": new_title_dict["new_title"]})
 
 
+@app.route("/delete-card", methods=["POST"])
+def delete_card():
+    card_id_dict = request.get_json("body")
+    data_handler.delete_card_by_id(card_id_dict)
+    return jsonify({"card_id": card_id_dict['card_id']})
+
+
 def main():
     app.run(debug=True)
 

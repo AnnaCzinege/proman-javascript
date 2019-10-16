@@ -165,6 +165,14 @@ export let dom = {
         cardBox.appendChild(cardRemove);
         cardBox.appendChild(cardTitle);
         cardPlace.appendChild(cardBox);
+
+        let cardID = data["id"];
+        cardRemove.addEventListener("click", function () {
+            dataHandler.deleteCard(cardID, (response) => {
+                let toBeDeletedCardDiv = document.querySelector(`[data-card-id="${response['card_id']}"]`);
+                toBeDeletedCardDiv.parentNode.removeChild(toBeDeletedCardDiv)
+            })
+        })
     },
     clickBoardTitle: function () {
         dom.oldContent = this.innerText;
