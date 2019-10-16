@@ -8,7 +8,7 @@ export let dom = {
     },
     loadBoards: function () {
         // retrieves boards and makes showBoards called
-        dataHandler.getBoards(function(boards){
+        dataHandler.getBoards(function (boards) {
             dom.showTable(boards);
         });
     },
@@ -76,6 +76,14 @@ export let dom = {
                         cardBox.appendChild(cardRemove);
                         cardBox.appendChild(cardTitle);
                         columnContent.appendChild(cardBox);
+
+                        let cardID = card.id;
+                        cardRemove.addEventListener("click", function () {
+                            dataHandler.deleteCard(cardID, (response) => {
+                                let toBeDeletedCardDiv = document.querySelector(`[data-card-id="${response['card_id']}"]`);
+                                toBeDeletedCardDiv.parentNode.removeChild(toBeDeletedCardDiv)
+                            })
+                        })
                     }
                 }
                 container.appendChild(columnTitle);
@@ -90,7 +98,7 @@ export let dom = {
         document.body.appendChild(boardContainer);
     },
     createBoard: function () {
-        dataHandler.createNewBoard("New board",function (data) {
+        dataHandler.createNewBoard("New board", function (data) {
             dom.showNewBoard(data);
         });
     },
@@ -176,7 +184,7 @@ export let dom = {
     },
     clickBoardTitle: function () {
         dom.oldContent = this.innerText;
-        this.outerHTML = "<input type='text' value='" + dom.oldContent +"' class='new-title'>";
+        this.outerHTML = "<input type='text' value='" + dom.oldContent + "' class='new-title'>";
         document.querySelector(".new-title").addEventListener("keypress", dom.renameBoardTitle)
     },
     switchBackToSpan: function (data, placeToChange) {
@@ -190,7 +198,7 @@ export let dom = {
         if (key === 13) {
             let boardId = this.parentElement.parentElement.id;
             let newTitle = document.querySelector(".new-title").value;
-            dataHandler.renameBoard(boardId,newTitle, (data) => {
+            dataHandler.renameBoard(boardId, newTitle, (data) => {
                 dom.switchBackToSpan(data, this);
             })
         }
