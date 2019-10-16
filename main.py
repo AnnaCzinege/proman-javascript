@@ -21,6 +21,7 @@ def create_new_board():
         board_dict = request.get_json("body")
         board_name = board_dict["data"]
         data_handler.save_new_board(board_name)
+        data_handler.add_board_statuses(data_handler.get_latest_board()["id"])
 
     return jsonify(data_handler.get_latest_board())
 
@@ -41,6 +42,14 @@ def rename_board():
         data_handler.rename_board_title(new_title_dict)
 
     return jsonify({"title": new_title_dict["new_title"]})
+
+
+@app.route("/create-new-status", methods=['POST'])
+def create_new_status():
+    board_id_dict = request.get_json("body")
+    board_id = board_id_dict["board_id"]
+    data_handler.add_new_status(board_id)
+    return jsonify(board_id_dict)
 
 
 @app.route("/delete-card", methods=["POST"])

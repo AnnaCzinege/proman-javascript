@@ -21,7 +21,8 @@ ALTER TABLE cards
 
 CREATE TABLE statuses(
     id serial primary key,
-    title varchar(255)
+    title varchar(255),
+    board_id int
 );
 
 

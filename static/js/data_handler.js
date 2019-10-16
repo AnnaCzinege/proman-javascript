@@ -74,5 +74,11 @@ export let dataHandler = {
             this._data = response;
             callback(response);
         })
+    },
+    createStatus: function (boardId, callback) {
+        this._api_post("/create-new-status", {"board_id": boardId}, (response) => {
+           this._data = response;
+           callback(response);
+        });
     }
 };

@@ -25,6 +25,7 @@ export let dom = {
             let boardHeader = document.createElement("div");
             let boardTitle = document.createElement("span");
             let addCardBtn = document.createElement("button");
+            let addStatusBtn = document.createElement("button");
             let deleteBoardBtn = document.createElement("button");
             let boardToggle = document.createElement("button");
             let boardI = document.createElement("i");
@@ -37,6 +38,7 @@ export let dom = {
             boardTitle.addEventListener("click", dom.clickBoardTitle);
             addCardBtn.setAttribute("class", "board-add");
             deleteBoardBtn.setAttribute("class", "board-add");
+            addStatusBtn.setAttribute("class", "add-column");
             boardToggle.setAttribute("class", "board-toggle");
             boardI.setAttribute("class", "fas fa-chevron-down");
             boardBackground.setAttribute("class", "board-columns");
@@ -52,60 +54,64 @@ export let dom = {
                     toBeDeletedBoardSection.parentNode.removeChild(toBeDeletedBoardSection);
                 })
             });
+            addStatusBtn.innerText = "Add status";
+            addStatusBtn.addEventListener("click", dom.createStatus);
             boardToggle.appendChild(boardI);
-            for (let child of [boardTitle, addCardBtn, deleteBoardBtn, boardToggle]) {
+            for (let child of [boardTitle, addCardBtn, addStatusBtn, deleteBoardBtn, boardToggle]) {
                 boardHeader.appendChild(child);
             }
 
             for (let status of boards.statuses) {
-                let container = document.createElement("div");
-                let columnTitle = document.createElement("div");
-                let columnContent = document.createElement("div");
+                if (board.id === status.board_id) {
+                    let container = document.createElement("div");
+                    let columnTitle = document.createElement("div");
+                    let columnContent = document.createElement("div");
 
-                container.setAttribute("class", "board-column");
-                columnTitle.setAttribute("class", "board-column-title");
-                columnContent.setAttribute("class", "board-column-content");
-                columnTitle.innerText = status.title;
+                    container.setAttribute("class", "board-column");
+                    columnTitle.setAttribute("class", "board-column-title");
+                    columnContent.setAttribute("class", "board-column-content");
+                    columnTitle.innerText = status.title;
 
-                for (let card of boards.cards) {
+                    for (let card of boards.cards) {
 
-                    if (status.id === card.status_id && board.id === card.board_id) {
-                        let cardBox = document.createElement("div");
-                        let cardRemove = document.createElement("div");
-                        let cardI = document.createElement("i");
-                        let cardTitle = document.createElement("div");
+                        if (status.id === card.status_id && board.id === card.board_id) {
+                            let cardBox = document.createElement("div");
+                            let cardRemove = document.createElement("div");
+                            let cardI = document.createElement("i");
+                            let cardTitle = document.createElement("div");
 
-                        cardBox.setAttribute("class", "card");
-                        cardBox.setAttribute("data-card-id", card.id);
-                        cardRemove.setAttribute("class", "card-remove");
-                        cardI.setAttribute("class", "fas fa-trash-alt");
-                        cardTitle.setAttribute("class", "card-title");
+                            cardBox.setAttribute("class", "card");
+                            cardBox.setAttribute("data-card-id", card.id);
+                            cardRemove.setAttribute("class", "card-remove");
+                            cardI.setAttribute("class", "fas fa-trash-alt");
+                            cardTitle.setAttribute("class", "card-title");
 
-                        cardTitle.innerText = card.title;
-                        cardRemove.appendChild(cardI);
-                        cardBox.appendChild(cardRemove);
-                        cardBox.appendChild(cardTitle);
-                        columnContent.appendChild(cardBox);
+                            cardTitle.innerText = card.title;
+                            cardRemove.appendChild(cardI);
+                            cardBox.appendChild(cardRemove);
+                            cardBox.appendChild(cardTitle);
+                            columnContent.appendChild(cardBox);
 
-                        let cardID = card.id;
-                        cardRemove.addEventListener("click", function () {
-                            dataHandler.deleteCard(cardID, (response) => {
-                                let toBeDeletedCardDiv = document.querySelector(`[data-card-id="${response['card_id']}"]`);
-                                toBeDeletedCardDiv.parentNode.removeChild(toBeDeletedCardDiv)
+                            let cardID = card.id;
+                            cardRemove.addEventListener("click", function () {
+                                dataHandler.deleteCard(cardID, (response) => {
+                                    let toBeDeletedCardDiv = document.querySelector(`[data-card-id="${response['card_id']}"]`);
+                                    toBeDeletedCardDiv.parentNode.removeChild(toBeDeletedCardDiv)
+                                })
                             })
-                        })
+                        }
                     }
+                    container.appendChild(columnTitle);
+                    container.appendChild(columnContent);
+                    boardBackground.appendChild(container);
                 }
-                container.appendChild(columnTitle);
-                container.appendChild(columnContent);
-                boardBackground.appendChild(container);
+                boardSection.appendChild(boardHeader);
+                boardSection.appendChild(boardBackground);
+                boardContainer.appendChild(boardSection);
             }
-            boardSection.appendChild(boardHeader);
-            boardSection.appendChild(boardBackground);
-            boardContainer.appendChild(boardSection);
+            document.body.appendChild(addBoardBtn);
+            document.body.appendChild(boardContainer);
         }
-        document.body.appendChild(addBoardBtn);
-        document.body.appendChild(boardContainer);
     },
     createBoard: function () {
         dataHandler.createNewBoard("New board", function (data) {
@@ -118,6 +124,7 @@ export let dom = {
         let boardHeader = document.createElement("div");
         let boardTitle = document.createElement("span");
         let addCardBtn = document.createElement("button");
+        let addStatusBtn = document.createElement("button");
         let deleteBoardBtn = document.createElement("button");
         let boardToggle = document.createElement("button");
         let boardI = document.createElement("i");
@@ -130,6 +137,7 @@ export let dom = {
         boardTitle.setAttribute("class", "board-title");
         boardTitle.addEventListener("click", dom.clickBoardTitle);
         addCardBtn.setAttribute("class", "board-add");
+        addStatusBtn.setAttribute("class", "add-column");
         deleteBoardBtn.setAttribute("class", "board-add");
         boardToggle.setAttribute("class", "board-toggle");
         boardI.setAttribute("class", "fas fa-chevron-down");
@@ -140,6 +148,9 @@ export let dom = {
         deleteBoardBtn.innerText = "Delete board";
         let boardID = data["id"];
         addCardBtn.addEventListener("click", dom.createCard);
+        addCardBtn.addEventListener("click", dom.createCard);
+        addStatusBtn.innerText = "Add status";
+        addStatusBtn.addEventListener("click", dom.createStatus);
         deleteBoardBtn.addEventListener("click", function () {
             dataHandler.deleteBoard(boardID, (response) => {
                 let toBeDeletedBoardSection = document.getElementById(`${boardID}`);
@@ -147,7 +158,7 @@ export let dom = {
             })
         });
         boardToggle.appendChild(boardI);
-        for (let child of [boardTitle, addCardBtn, deleteBoardBtn, boardToggle]) {
+        for (let child of [boardTitle, addCardBtn, addStatusBtn, deleteBoardBtn, boardToggle]) {
             boardHeader.appendChild(child);
         }
 
@@ -222,5 +233,27 @@ export let dom = {
                 dom.switchBackToSpan(data, this);
             })
         }
+    },
+    createStatus: function () {
+        let boardId = this.parentElement.parentElement.id;
+        dataHandler.createStatus(boardId, function (data) {
+            dom.showNewStatus(data);
+        })
+    },
+    showNewStatus: function (data) {
+        let targetBoard = document.getElementById(data["board_id"]);
+        let placeToAdd = targetBoard.querySelector(".board-columns");
+        let container = document.createElement("div");
+        let columnTitle = document.createElement("div");
+        let columnContent = document.createElement("div");
+
+        container.setAttribute("class", "board-column");
+        columnTitle.setAttribute("class", "board-column-title");
+        columnContent.setAttribute("class", "board-column-content");
+        columnTitle.innerText = "new status";
+
+        container.appendChild(columnTitle);
+        container.appendChild(columnContent);
+        placeToAdd.appendChild(container);
     }
 };

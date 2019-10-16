@@ -130,4 +130,21 @@ def delete_board_by_id(cursor, board_id_dict):
                         FROM boards
                         WHERE boards.id = %(board_id)s
                         """, {"board_id": board_id})
+@database_common.connection_handler
+def add_board_statuses(cursor, board_id):
+    static_statuses = ["new", "in progress", "testing", "done"]
 
+    for status in static_statuses:
+        cursor.execute("""
+                        INSERT INTO statuses (title, board_id)
+                        VALUES (%(status)s, %(board_id)s)
+                        """, {"status": status,
+                              "board_id": board_id})
+
+
+@database_common.connection_handler
+def add_new_status(cursor, board_id):
+    cursor.execute("""
+                    INSERT INTO statuses (title, board_id)
+                    VALUES ('new status', %(board_id)s)
+                    """, {"board_id": board_id})
