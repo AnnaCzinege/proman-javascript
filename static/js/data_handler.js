@@ -68,5 +68,11 @@ export let dataHandler = {
             this._data = response;
             callback(response);
         })
+    },
+    deleteBoard: function (boardID, callback) {
+        this._api_post("/delete-board", {"board_id": boardID}, (response) => {
+            this._data = response;
+            callback(response);
+        })
     }
 };

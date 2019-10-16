@@ -25,6 +25,7 @@ export let dom = {
             let boardHeader = document.createElement("div");
             let boardTitle = document.createElement("span");
             let addCardBtn = document.createElement("button");
+            let deleteBoardBtn = document.createElement("button");
             let boardToggle = document.createElement("button");
             let boardI = document.createElement("i");
             let boardBackground = document.createElement("div");
@@ -35,15 +36,24 @@ export let dom = {
             boardTitle.setAttribute("class", "board-title");
             boardTitle.addEventListener("click", dom.clickBoardTitle);
             addCardBtn.setAttribute("class", "board-add");
+            deleteBoardBtn.setAttribute("class", "board-add");
             boardToggle.setAttribute("class", "board-toggle");
             boardI.setAttribute("class", "fas fa-chevron-down");
             boardBackground.setAttribute("class", "board-columns");
 
             boardTitle.innerText = board.title;
             addCardBtn.innerText = "Add card";
+            deleteBoardBtn.innerText = "Delete board";
+            let boardID = board.id;
             addCardBtn.addEventListener("click", dom.createCard);
+            deleteBoardBtn.addEventListener("click", function () {
+                dataHandler.deleteBoard(boardID, (response) => {
+                    let toBeDeletedBoardSection = document.getElementById(`${boardID}`);
+                    toBeDeletedBoardSection.parentNode.removeChild(toBeDeletedBoardSection);
+                })
+            });
             boardToggle.appendChild(boardI);
-            for (let child of [boardTitle, addCardBtn, boardToggle]) {
+            for (let child of [boardTitle, addCardBtn, deleteBoardBtn, boardToggle]) {
                 boardHeader.appendChild(child);
             }
 
@@ -108,6 +118,7 @@ export let dom = {
         let boardHeader = document.createElement("div");
         let boardTitle = document.createElement("span");
         let addCardBtn = document.createElement("button");
+        let deleteBoardBtn = document.createElement("button");
         let boardToggle = document.createElement("button");
         let boardI = document.createElement("i");
         let boardBackground = document.createElement("div");
@@ -119,15 +130,24 @@ export let dom = {
         boardTitle.setAttribute("class", "board-title");
         boardTitle.addEventListener("click", dom.clickBoardTitle);
         addCardBtn.setAttribute("class", "board-add");
+        deleteBoardBtn.setAttribute("class", "board-add");
         boardToggle.setAttribute("class", "board-toggle");
         boardI.setAttribute("class", "fas fa-chevron-down");
         boardBackground.setAttribute("class", "board-columns");
 
         boardTitle.innerText = "New board";
         addCardBtn.innerText = "Add card";
+        deleteBoardBtn.innerText = "Delete board";
+        let boardID = data["id"];
         addCardBtn.addEventListener("click", dom.createCard);
+        deleteBoardBtn.addEventListener("click", function () {
+            dataHandler.deleteBoard(boardID, (response) => {
+                let toBeDeletedBoardSection = document.getElementById(`${boardID}`);
+                toBeDeletedBoardSection.parentNode.removeChild(toBeDeletedBoardSection);
+            })
+        });
         boardToggle.appendChild(boardI);
-        for (let child of [boardTitle, addCardBtn, boardToggle]) {
+        for (let child of [boardTitle, addCardBtn, deleteBoardBtn, boardToggle]) {
             boardHeader.appendChild(child);
         }
 

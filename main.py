@@ -50,6 +50,13 @@ def delete_card():
     return jsonify({"card_id": card_id_dict['card_id']})
 
 
+@app.route("/delete-board", methods=["POST"])
+def delete_board():
+    board_id_dict = request.get_json("body")
+    data_handler.delete_board_by_id(board_id_dict)
+    return jsonify({"board_id": board_id_dict['board_id']})
+
+
 def main():
     app.run(debug=True)
 

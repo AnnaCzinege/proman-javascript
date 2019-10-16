@@ -117,4 +117,17 @@ def delete_card_by_id(cursor, card_id_dict):
                     """, {"card_id": card_id})
 
 
+@database_common.connection_handler
+def delete_board_by_id(cursor, board_id_dict):
+    board_id = board_id_dict["board_id"]
+    cursor.execute("""
+                    DELETE
+                    FROM cards
+                    WHERE cards.board_id = %(board_id)s
+                    """, {"board_id": board_id})
+    cursor.execute("""
+                        DELETE 
+                        FROM boards
+                        WHERE boards.id = %(board_id)s
+                        """, {"board_id": board_id})
 
