@@ -8,10 +8,7 @@
 
 body{
     font-family: sans-serif;
-}
-
-html {
-    background: url(https://www.elsetge.cat/myimg/f/96-968523_green-natural-hd-images-download-nature-beautiful-landscape.jpg) no-repeat center;
+    background-image: url("https://i.pinimg.com/originals/ff/b4/89/ffb48967ae0c90c3a3d8414edbc29c7e.jpg");
     background-size: cover;
 }
 
@@ -41,20 +38,25 @@ button{
     margin: 0 auto;
 }
 
+.new-title {
+    background-color: #bd7d7d90;
+}
+
 section.board{
     margin: 20px;
     border: aliceblue;
-    background: #ffffff90;
+    background: #bd7d7d90;
     border-radius: 3px;
 }
 
 .board-header{
     height: 50px;
-    background: #fff;
+    background: grey;
     border-radius: var(--border-radius) var(--border-radius) 0 0;
 }
 
 .board-title{
+    color: white;
     margin: 13px;
     display: inline-block;
     font-size: 20px;
@@ -69,8 +71,17 @@ section.board{
 }
 
 .board-columns{
+    background: #ffffff90;
     display: flex;
+    max-height: 500px;
     flex-wrap: nowrap;
+    overflow: hidden;
+    transition: all .5s ease-in-out;
+}
+
+.closed {
+    max-height: 0;
+    transition: all .5s ease-in-out;
 }
 
 .board-column{

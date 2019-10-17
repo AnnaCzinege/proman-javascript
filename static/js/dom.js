@@ -1,5 +1,6 @@
 // It uses data_handler.js to visualize elements
 import {dataHandler} from "./data_handler.js";
+import { nav } from "./nav.js";
 
 export let dom = {
     oldContent: "",
@@ -40,6 +41,7 @@ export let dom = {
             deleteBoardBtn.setAttribute("class", "board-add");
             addStatusBtn.setAttribute("class", "add-column");
             boardToggle.setAttribute("class", "board-toggle");
+            boardToggle.setAttribute("data-toggle", "true");
             boardI.setAttribute("class", "fas fa-chevron-down");
             boardBackground.setAttribute("class", "board-columns");
 
@@ -57,6 +59,7 @@ export let dom = {
             addStatusBtn.innerText = "Add status";
             addStatusBtn.addEventListener("click", dom.createStatus);
             boardToggle.appendChild(boardI);
+            boardToggle.addEventListener("click", nav.clickToggle);
             for (let child of [boardTitle, addCardBtn, addStatusBtn, deleteBoardBtn, boardToggle]) {
                 boardHeader.appendChild(child);
             }
@@ -225,7 +228,7 @@ export let dom = {
     },
     clickBoardTitle: function () {
         dom.oldContent = this.innerText;
-        this.outerHTML = "<input type='text' value='" + dom.oldContent + "' class='new-title'>";
+        this.outerHTML = "<input type='text' value='" + dom.oldContent + "' class='board-title new-title'>";
         document.querySelector(".new-title").addEventListener("keypress", dom.renameBoardTitle)
     },
     switchBackToSpan: function (data, placeToChange) {

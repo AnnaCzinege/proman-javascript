@@ -1,5 +1,4 @@
 import { dom } from "./dom.js";
-import { nav } from "./nav.js"
 
 // This function is to initialize the application
 function init() {
