@@ -31,6 +31,7 @@ button{
     font-family: sans-serif;
     padding: 4px 10px;
     margin-left: 10px;
+    cursor: pointer;
 }
 
 .board-container{
@@ -60,6 +61,7 @@ section.board{
     margin: 13px;
     display: inline-block;
     font-size: 20px;
+    cursor: pointer;
 }
 .board-title, .board-add, .board-toggle{
     display: inline-block;
@@ -144,5 +146,6 @@ section.board{
 }
 
 .new-board {
-    margin-left: 23.7%;
+    display: block;
+    margin: 0 auto;
 }
