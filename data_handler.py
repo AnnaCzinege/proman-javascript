@@ -137,6 +137,8 @@ def delete_board_by_id(cursor, board_id_dict):
                         FROM boards
                         WHERE boards.id = %(board_id)s
                         """, {"board_id": board_id})
+
+
 @database_common.connection_handler
 def add_board_statuses(cursor, board_id):
     static_statuses = ["new", "in progress", "testing", "done"]
@@ -147,6 +149,16 @@ def add_board_statuses(cursor, board_id):
                         VALUES (%(status)s, %(board_id)s)
                         """, {"status": status,
                               "board_id": board_id})
+
+
+@database_common.connection_handler
+def get_latest_statuses(cursor):
+    cursor.execute("""
+                    SELECT id, title FROM statuses
+                    ORDER BY id DESC
+                    LIMIT 4
+                    """)
+    return normalize_output_multiple_rows(cursor.fetchall())
 
 
 @database_common.connection_handler

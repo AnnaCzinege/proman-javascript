@@ -68,6 +68,7 @@ export let dom = {
                     let columnContent = document.createElement("div");
 
                     container.setAttribute("class", "board-column");
+                    container.setAttribute("data-status-id", status.id);
                     columnTitle.setAttribute("class", "board-column-title");
                     columnContent.setAttribute("class", "board-column-content");
                     columnTitle.innerText = status.title;
@@ -169,6 +170,11 @@ export let dom = {
             let columnContent = document.createElement("div");
 
             container.setAttribute("class", "board-column");
+            for (let i = 0; i < data.statuses.length; ++i){
+                if (data.statuses[i].title === status) {
+                 container.setAttribute("data-status-id", data.statuses[i].id)
+                }
+            }
             columnTitle.setAttribute("class", "board-column-title");
             columnContent.setAttribute("class", "board-column-content");
             columnTitle.innerText = status;
@@ -182,7 +188,10 @@ export let dom = {
     },
     createCard: function () {
         let boardId = this.parentElement.parentElement.id;
-        dataHandler.createNewCard("new card", boardId, 0, function (data, boardId) {
+        let boardPlace = document.getElementById(boardId);
+        let statusIdPlace = boardPlace.querySelector(".board-columns").firstChild;
+        let statusId = statusIdPlace.dataset.statusId;
+        dataHandler.createNewCard("new card", boardId, statusId, function (data, boardId) {
             dom.showNewCard(data, boardId)
         })
     },

@@ -14,15 +14,16 @@ def get_boards():
     return jsonify(data_handler.get_boards())
 
 
-@app.route("/create-new-board", methods=['GET', 'POST'])
+@app.route("/create-new-board", methods=['POST'])
 def create_new_board():
-    if request.method == "POST":
-        board_dict = request.get_json("body")
-        board_name = board_dict["data"]
-        data_handler.save_new_board(board_name)
-        data_handler.add_board_statuses(data_handler.get_latest_board()["id"])
-
-    return jsonify(data_handler.get_latest_board())
+    board_dict = request.get_json("body")
+    board_name = board_dict["data"]
+    data_handler.save_new_board(board_name)
+    latest_board = data_handler.get_latest_board()
+    data_handler.add_board_statuses(latest_board["id"])
+    latest_statuses = data_handler.get_latest_statuses()
+    latest_board["statuses"] = latest_statuses
+    return jsonify(latest_board)
 
 
 @app.route("/create-new-card", methods=['GET', 'POST'])
