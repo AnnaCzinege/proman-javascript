@@ -125,6 +125,13 @@ def delete_board_by_id(cursor, board_id_dict):
                     FROM cards
                     WHERE cards.board_id = %(board_id)s
                     """, {"board_id": board_id})
+
+    cursor.execute("""
+                        DELETE
+                        FROM statuses
+                        WHERE statuses.board_id = %(board_id)s
+                        """, {"board_id": board_id})
+
     cursor.execute("""
                         DELETE 
                         FROM boards

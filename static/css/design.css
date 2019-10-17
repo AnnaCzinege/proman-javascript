@@ -7,9 +7,12 @@
 }
 
 body{
-    min-width: 620px;
-    background: #ddd url(http://cdn.backgroundhost.com/backgrounds/subtlepatterns/diagonal-noise.png);
     font-family: sans-serif;
+}
+
+html {
+    background: url(https://www.elsetge.cat/myimg/f/96-968523_green-natural-hd-images-download-nature-beautiful-landscape.jpg) no-repeat center;
+    background-size: cover;
 }
 
 h1, .board-title, .board-column-title{
