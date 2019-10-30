@@ -1,7 +1,6 @@
 export let dataHandler = {
     _data: {},
     _api_get: function (url, callback) {
-
         fetch(url, {
             method: 'GET',
             credentials: 'same-origin'
@@ -10,9 +9,11 @@ export let dataHandler = {
         .then(json_response => callback(json_response));
     },
     _api_post: function (url, data, callback) {
-
         fetch(url, {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(data)
         })
         .then(response => response.json())
@@ -79,6 +80,17 @@ export let dataHandler = {
         this._api_post("/create-new-status", {"board_id": boardId}, (response) => {
            this._data = response;
            callback(response);
-        });
+        })
+    },
+    renameCard: function (cardId, newTitle, callback) {
+        this._api_post("/rename-card", {"card_id": cardId, "new_title": newTitle}, (response) => {
+            this.data = response;
+            callback(response);
+        })
+    },
+    moveCard: function (cardId, tableId, statusId, callback) {
+        this._api_post("/move-card", {"card_id": cardId, "table_id": tableId, "status_id": statusId},
+            (response) => {this.data = response;
+                                    callback(response)})
     }
 };

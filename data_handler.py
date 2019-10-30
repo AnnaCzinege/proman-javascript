@@ -167,3 +167,29 @@ def add_new_status(cursor, board_id):
                     INSERT INTO statuses (title, board_id)
                     VALUES ('new status', %(board_id)s)
                     """, {"board_id": board_id})
+
+
+@database_common.connection_handler
+def rename_card_title(cursor, data):
+    new_title = data["new_title"]
+    card_id = data["card_id"]
+    cursor.execute("""
+                    UPDATE cards
+                    SET title = %(new_title)s
+                    WHERE id = %(card_id)s
+                    """, {"new_title": new_title,
+                          "card_id": card_id})
+
+
+@database_common.connection_handler
+def change_card_pos(cursor, data):
+    card_id = data["card_id"]
+    table_id = data["table_id"]
+    status_id = data["status_id"]
+    cursor.execute("""
+                    UPDATE cards
+                    SET status_id = %(status_id)s, board_id = %(table_id)s
+                    WHERE id = %(card_id)s
+                    """, {"status_id": status_id,
+                          "table_id": table_id,
+                          "card_id": card_id})

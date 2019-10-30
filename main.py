@@ -16,7 +16,7 @@ def get_boards():
 
 @app.route("/create-new-board", methods=['POST'])
 def create_new_board():
-    board_dict = request.get_json("body")
+    board_dict = request.json
     board_name = board_dict["data"]
     data_handler.save_new_board(board_name)
     latest_board = data_handler.get_latest_board()
@@ -44,6 +44,13 @@ def rename_board():
     return jsonify({"title": new_title_dict["new_title"]})
 
 
+@app.route("/rename-card", methods=["POST"])
+def rename_card():
+    data_dict = request.get_json("body")
+    data_handler.rename_card_title(data_dict)
+    return jsonify({"title": data_dict["new_title"]})
+
+
 @app.route("/create-new-status", methods=['POST'])
 def create_new_status():
     board_id_dict = request.get_json("body")
@@ -64,6 +71,13 @@ def delete_board():
     board_id_dict = request.get_json("body")
     data_handler.delete_board_by_id(board_id_dict)
     return jsonify({"board_id": board_id_dict['board_id']})
+
+
+@app.route("/move-card", methods=["POST"])
+def move_card():
+    data = request.get_json("body")
+    data_handler.change_card_pos(data)
+    return jsonify({"done": "done"})
 
 
 def main():
