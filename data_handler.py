@@ -28,12 +28,14 @@ def get_boards(cursor):
     boards = normalize_output_multiple_rows(cursor.fetchall())
 
     cursor.execute("""
-                    SELECT * FROM cards;                    
+                    SELECT * FROM cards
+                    ORDER BY id                   
                     """)
     cards = normalize_output_multiple_rows(cursor.fetchall())
 
     cursor.execute("""
-                    SELECT * FROM statuses;                    
+                    SELECT * FROM statuses
+                    ORDER BY id                  
                     """)
     statuses = normalize_output_multiple_rows(cursor.fetchall())
 
@@ -193,3 +195,46 @@ def change_card_pos(cursor, data):
                     """, {"status_id": status_id,
                           "table_id": table_id,
                           "card_id": card_id})
+
+
+@database_common.connection_handler
+def rename_status(cursor, data):
+    status_id = data["status_id"]
+    new_title = data["new_title"]
+    cursor.execute("""
+                    UPDATE statuses
+                    SET title = %(new_title)s
+                    WHERE id = %(status_id)s
+                    """, {"new_title": new_title,
+                          "status_id": status_id})
+
+
+@database_common.connection_handler
+def get_all_username(cursor):
+    cursor.execute("""
+                    SELECT username
+                    FROM users
+                    """)
+    return normalize_output_multiple_rows(cursor.fetchall())
+
+
+@database_common.connection_handler
+def add_new_user(cursor, data):
+    username = data["username"]
+    password = data["password"]
+    cursor.execute("""
+                    INSERT INTO users (username, password) 
+                    VALUES (%(username)s, %(password)s) 
+                    """, {"username": username,
+                          "password": password})
+
+
+@database_common.connection_handler
+def get_pass_by_username(cursor, username):
+    cursor.execute("""
+                    SELECT password
+                    FROM users
+                    WHERE username = %(username)s
+                    """, {"username": username})
+    return normalize_output_single_row(cursor.fetchall())
+

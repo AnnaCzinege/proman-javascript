@@ -16,13 +16,17 @@
         <link rel="icon" type="image/png" sizes="96x96" href="{{ url_for('static', filename='favicon/favicon-96x96.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='favicon/favicon-16x16.png') }}">
 
-        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
         <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/design.css') }}">
         <script type="module" src="{{ url_for('static', filename='js/main.js') }}" defer></script>
     </head>
     <body>
         <div class="background-img"></div>
+        <nav class="nav-main">
+            <div class="signin">SIGN IN</div>
+            <div class="signup">SIGN UP</div>
+            <p class="message"></p>
+        </nav>
         <h1>ProMan</h1>
-        {% include 'templates.html' %}
+    {% include "modal.html" %}
     </body>
 </html>

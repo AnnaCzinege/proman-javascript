@@ -1,7 +1,10 @@
-from flask import Flask, render_template, url_for, jsonify, request
+from flask import Flask, render_template, url_for, jsonify, request, session
 import data_handler
+import hash
 
 app = Flask(__name__)
+
+app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 
 @app.route("/")
@@ -40,8 +43,7 @@ def rename_board():
     if request.method == 'POST':
         new_title_dict = request.get_json("body")
         data_handler.rename_board_title(new_title_dict)
-
-    return jsonify({"title": new_title_dict["new_title"]})
+        return jsonify({"title": new_title_dict["new_title"]})
 
 
 @app.route("/rename-card", methods=["POST"])
@@ -78,6 +80,36 @@ def move_card():
     data = request.get_json("body")
     data_handler.change_card_pos(data)
     return jsonify({"done": "done"})
+
+
+@app.route("/rename-status", methods=["POST"])
+def rename_status():
+    data = request.get_json("body")
+    data_handler.rename_status(data)
+    return jsonify({"new_title": data["new_title"]})
+
+
+@app.route("/signin", methods=["POST"])
+def sign_in():
+    data_from_js = request.get_json("body")
+    usernames = [item["username"] for item in data_handler.get_all_username()]
+    if data_from_js["username"] in usernames and hash.verify_pass(data_from_js["password"], data_handler.get_pass_by_username(data_from_js["username"])["password"]):
+        session["username"] = data_from_js["username"]
+        return jsonify({"message": f"You are logged in as {data_from_js['username']}"})
+    else:
+        return jsonify({"message": "Wrong username or password"})
+
+
+@app.route("/signup", methods=["POST"])
+def sign_up():
+    usernames = [item["username"] for item in data_handler.get_all_username()]
+    data_from_js = request.get_json("body")
+    if data_from_js["username"] in usernames:
+        return jsonify({"message": "Username is already taken"})
+    else:
+        data_from_js["password"] = hash.hash_pass(data_from_js["password"])
+        data_handler.add_new_user(data_from_js)
+        return jsonify({"message": "Registration successful"})
 
 
 def main():

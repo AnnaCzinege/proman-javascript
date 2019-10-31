@@ -73,6 +73,7 @@ export let dom = {
                     container.setAttribute("class", "board-column");
                     container.setAttribute("data-status-id", status.id);
                     columnTitle.setAttribute("class", "board-column-title");
+                    columnTitle.addEventListener("click", dom.clickStatusTitle);
                     columnContent.setAttribute("class", "board-column-content");
                     columnTitle.innerText = status.title;
 
@@ -120,6 +121,8 @@ export let dom = {
         document.body.appendChild(boardContainer);
         nav.setDraggable();
         nav.setDragPlaces();
+        nav.setModalListener();
+        document.querySelector(".message").textContent = localStorage["message"];
     },
     createBoard: function () {
         dataHandler.createNewBoard("New board", function (data) {
@@ -165,6 +168,7 @@ export let dom = {
                 toBeDeletedBoardSection.parentNode.removeChild(toBeDeletedBoardSection);
             })
         });
+        boardToggle.addEventListener("click", nav.clickToggle);
         boardToggle.appendChild(boardI);
         for (let child of [boardTitle, addCardBtn, addStatusBtn, deleteBoardBtn, boardToggle]) {
             boardHeader.appendChild(child);
@@ -182,6 +186,7 @@ export let dom = {
                 }
             }
             columnTitle.setAttribute("class", "board-column-title");
+            columnTitle.addEventListener("click", dom.clickStatusTitle);
             columnContent.setAttribute("class", "board-column-content");
             nav.setSoloDragPlace(columnContent);
             columnTitle.innerText = status;
@@ -281,6 +286,7 @@ export let dom = {
 
         container.setAttribute("class", "board-column");
         columnTitle.setAttribute("class", "board-column-title");
+        columnTitle.addEventListener("click", dom.clickStatusTitle);
         columnContent.setAttribute("class", "board-column-content");
         nav.setSoloDragPlace(columnContent);
         columnTitle.innerText = "new status";
@@ -317,6 +323,36 @@ export let dom = {
             let parent = this.parentNode;
             this.outerHTML = "<div class='card-title'>" + dom.oldContent + "</div>";
             parent.querySelector(".card-title").addEventListener("click", dom.clickCardTitle);
+        }
+    },
+    clickStatusTitle: function () {
+        dom.oldContent = this.textContent;
+        this.outerHTML = "<input type='text' value='" + dom.oldContent + "' class='card-title new-title'>";
+        let inputPlace = document.querySelector(".new-title");
+        inputPlace.focus();
+        inputPlace.addEventListener("keypress", dom.renameStatus);
+        inputPlace.addEventListener("blur", dom.switchBackToOldStatus);
+    },
+    renameStatus: function (e) {
+        let statusId = this.parentElement.dataset.statusId;
+        let newTitle = this.value;
+        let key = e.which || e.keyCode;
+        if (key === 13) {
+            if (newTitle.length > 0) {
+                let parent = this.parentElement;
+                this.setAttribute("data-active", "true");
+                dataHandler.renameStatus(statusId, newTitle, (data) => {
+                    this.outerHTML = "<div class='board-column-title'>" + data.new_title + "</div>";
+                    parent.querySelector(".board-column-title").addEventListener("click", dom.clickStatusTitle);
+                })
+            }
+        }
+    },
+    switchBackToOldStatus: function () {
+        if (document.querySelector(".new-title").dataset.active !== "true") {
+            let parent = this.parentNode;
+            this.outerHTML = "<div class='board-column-title'>" + dom.oldContent + "</div>";
+            parent.querySelector(".board-column-title").addEventListener("click", dom.clickStatusTitle);
         }
     }
 };

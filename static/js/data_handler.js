@@ -92,5 +92,17 @@ export let dataHandler = {
         this._api_post("/move-card", {"card_id": cardId, "table_id": tableId, "status_id": statusId},
             (response) => {this.data = response;
                                     callback(response)})
+    },
+    renameStatus: function (statusId, newTitle, callback) {
+        this._api_post("/rename-status", {"status_id": statusId, "new_title": newTitle}, (response) => {
+            this.data = response;
+            callback(response);
+        })
+    },
+    signIn: function (url, username, password, callback) {
+        this._api_post(url, {"username": username, "password": password}, (response) => {
+            this.data = response;
+            callback(response);
+        })
     }
 };

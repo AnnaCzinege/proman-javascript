@@ -51,5 +51,46 @@ export let nav = {
     },
     dragLeave: function (e) {
         e.preventDefault();
-    }
+    },
+    setModalListener: function () {
+        document.querySelector(".signin").addEventListener("click", nav.choseModal);
+        document.querySelector(".signup").addEventListener("click", nav.choseModal);
+        document.querySelector(".modal-background").addEventListener("click", nav.hideModal);
+    },
+    choseModal: function () {
+        let targetClass = this.className;
+        let signIn = "/signin";
+        let signUp = "/signup";
+        switch (targetClass) {
+            case "signin":
+                nav.createModal(signIn, "Sign In");
+                break;
+            case "signup":
+                nav.createModal(signUp, "Sign Up");
+                break;
+        }
+    },
+    createModal: function (url, btnContent) {
+        let confirmBtn = document.createElement("button");
+        confirmBtn.classList.add("confirm-btn");
+        confirmBtn.textContent = btnContent;
+        confirmBtn.addEventListener("click", function() {
+            let username = document.querySelector("#username").value;
+            let password = document.querySelector("#password").value;
+            dataHandler.signIn(url, username, password, (response) => {
+                localStorage.setItem("message", response.message);
+                document.querySelector(".message").textContent = localStorage["message"];
+            });
+            nav.hideModal();
+        });
+        document.querySelector(".modal-content").appendChild(confirmBtn);
+        document.querySelector(".modal-background").classList.remove("invisible");
+        document.querySelector(".modal-content").classList.remove("invisible");
+    },
+    hideModal: function () {
+        document.querySelector(".modal-background").classList.add("invisible");
+        document.querySelector(".modal-content").classList.add("invisible");
+        let btn = document.querySelector(".confirm-btn");
+        btn.parentNode.removeChild(btn);
+    },
 };

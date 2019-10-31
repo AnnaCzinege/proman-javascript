@@ -9,7 +9,7 @@
 body{
     font-family: sans-serif;
     background-image: url("https://i.pinimg.com/originals/ff/b4/89/ffb48967ae0c90c3a3d8414edbc29c7e.jpg");
-    background-size: cover;
+    background-size: auto;
 }
 
 h1, .board-title, .board-column-title{
@@ -149,4 +149,92 @@ section.board{
 .new-board {
     display: block;
     margin: 0 auto;
+}
+
+.nav-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #ffffff90
+}
+
+.signin, .signup {
+    display: inline-block;
+    float: left;
+    line-height: 50px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.signin:hover {
+    background-color: #cdcdcd90;
+}
+
+.signup:hover {
+    background-color: #cdcdcd90;
+}
+
+.modal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #80808090;
+    z-index: 2000;
+}
+
+.modal-content {
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    height: 300px;
+    background-color: white;
+    z-index: 2001;
+    border-radius:10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+}
+
+.username {
+    display: block;
+    margin: 70px auto 0;
+    text-align: center;
+}
+
+.username input, .password input {
+    display: block;
+    margin: auto;
+    background-color: lightgrey;
+}
+
+.password {
+    display: block;
+    margin: 10px auto 0;
+    text-align: center;
+}
+
+.modal-content button {
+    display: block;
+    margin: 50px auto 0;
+}
+
+.invisible {
+    display: none;
+}
+
+.message {
+    float: left;
+    margin-left: 30px;
 }
