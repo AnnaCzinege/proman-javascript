@@ -1,3 +1,3 @@
 # Proman
 
-It is not mandatory but feel free to use the skeleton code which you find in this repo. Also, we provided some design materials, like an example layout; if you like, you can freely use it.
+Similar project to Trello wiht Python/Flask backend and Vanilla Javascript Frontend. We used PostgreSQL to the table datas.
